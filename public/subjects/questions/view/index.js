@@ -42,7 +42,9 @@ const getAnswersById = async () => {
       let answers = data.data.docs;
       answersHtml = `
       <div class="row my-3">
-        <a href="/subjects/questions/answer/?questionId=${questionId}&question=${questionName}">
+        <a href="/subjects/questions/answer/?questionId=${questionId}&question=${
+        questionName || ""
+      }">
           <button class="btn btn-sm btn-outline-secondary">Answer this question 🚀</button>
         </a>
       </div>
