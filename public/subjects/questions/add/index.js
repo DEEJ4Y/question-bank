@@ -22,7 +22,7 @@ const createQuestionService = async (reqBody) => {
 const submitQuestion = async () => {
   const inputVal = document.getElementById("search");
   const data = await createQuestionService({
-    question: inputVal.value,
+    question: inputVal.value.split("\n").filter((q) => q.length > 0),
     searchKeywords: getKeywords(inputVal.value),
     parentId: subjectId,
   });

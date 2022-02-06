@@ -1,8 +1,9 @@
 const getQuestions = async () => {
   let subjectId = getParamAndValidateObjectId("subject", "/subjects");
-  const subjectName = getParam("name");
+  let subjectName = getParam("name");
   if (!subjectName) {
-    window.location.href = "/subjects";
+    // window.location.href = "/subjects";
+    subjectName = "Questions";
   }
   let data = await getQuestionsService(subjectId);
   if (data) {
@@ -35,7 +36,7 @@ const getQuestions = async () => {
           questionsHtml += `
           <div class="p-2 col-lg-4 col-sm-6 col-12">
             <div class="p-3 shadow rounded h-100">          
-              <div class="h6">❓ ${questionObj.question.slice(0, 50)}</div>
+              <div class="h6">❓ ${questionObj.question[0].slice(0, 50)}</div>
               <div>
                 <a class="mb-1" href="/subjects/questions/view/?id=${
                   questionObj.id

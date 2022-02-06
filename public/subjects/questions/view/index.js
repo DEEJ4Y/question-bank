@@ -12,9 +12,16 @@ const getQuestionsById = async () => {
       </div>`;
     } else {
       let questionObj = data.data;
-      questionName = questionObj.question;
+      // console.log(questionObj);
+      let questions = questionObj.question;
+      questionName = questions[0];
       questionHtml = `
-      <h1>❓ ${questionName}</h1>`;
+      <h1>❓ Question</h1>`;
+      questions.forEach((questionLine) => {
+        questionHtml += `
+          <p class="lead">${questionLine}</p>
+        `;
+      });
     }
 
     document.getElementById("question").innerHTML = questionHtml;
@@ -48,10 +55,15 @@ const getAnswersById = async () => {
         `;
       }
       answers.forEach((answerObj, idx) => {
+        let inner = ``;
+
+        answers[answers.length - idx - 1].answer.forEach((answerLine, idx) => {
+          inner += `<p class="mt-1 mb-0">${answerLine}</p>`;
+        });
         answersHtml += `
         <div class="mb-3 rounded shadow mb-2 p-3">
           <p class="mb-0 fw-bold">✅ Answer ${answers.length - idx}</p>
-          <p class="mb-0">${answers[answers.length - idx - 1].answer}</p>
+          ${inner}
         </div>
         `;
       });

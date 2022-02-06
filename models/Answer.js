@@ -3,12 +3,13 @@ var mongoosePaginate = require("mongoose-paginate");
 
 const AnswerSchema = new mongoose.Schema(
   {
-    answer: {
-      type: String,
-      minLength: [3, "Answer must be at least 3 characters. "],
-      trim: true,
-      required: [true, "Please add an answer. "],
-    },
+    answer: [
+      {
+        type: String,
+        minLength: [1, "Answer must be at least 3 characters. "],
+        required: [true, "Please add an answer. "],
+      },
+    ],
     searchKeywords: [
       {
         type: String,
