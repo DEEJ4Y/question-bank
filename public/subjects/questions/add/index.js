@@ -10,9 +10,9 @@ const createQuestionService = async (reqBody) => {
     });
 
     if (res.status === 201) {
-      window.location.href = `/subjects/questions/?subject=${subjectId}`;
+      const resData = await res.json();
+      window.location.href = `/subjects/questions/view/?id=${resData.data.id}`;
     }
-    return res.json();
   } catch (error) {
     console.error(error);
     return false;
