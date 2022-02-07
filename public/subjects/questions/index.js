@@ -1,3 +1,5 @@
+const page = getParam("page") || 1;
+
 const getQuestions = async () => {
   let subjectId = getParamAndValidateObjectId("subject", "/subjects");
   let subjectName = getParam("name");
@@ -26,11 +28,39 @@ const getQuestions = async () => {
         </a>
       </div>`;
       } else {
+        let currentPage = Number(data.data.page);
+        let totalPages = data.data.pages;
+        let pagination = `
+          <li class="page-item${currentPage === 1 ? " disabled" : ""}">
+            <a class="page-link" href="/subjects/questions/?subject=${subjectId}&name=${subjectName}&page=${
+          Number(page) - 1
+        }">Previous</a>
+          </li>
+        `;
+        for (let i = 1; i <= totalPages; i++) {
+          pagination += `
+            <li class="page-item${
+              currentPage === i ? " active" : ""
+            }"><a class="page-link" href="/subjects/questions/?subject=${subjectId}&name=${subjectName}&page=${i}">${i}</a></li>
+          `;
+        }
+        pagination += `
+          <li class="page-item${currentPage === totalPages ? " disabled" : ""}">
+            <a class="page-link" href="/subjects/questions/?subject=${subjectId}&name=${subjectName}&page=${
+          Number(page) + 1
+        }">Next</a>
+          </li>
+        `;
         document.getElementById("add-questions").innerHTML = `
         <div class="row text-center mb-3">
           <a href="/subjects/questions/add/?subject=${subjectId}">
             <button class="btn btn-outline-secondary">Add a question 🚀</button>
           </a>
+          <nav aria-label="Page navigation example" class="text-center mt-3 d-flex justify-content-center">
+            <ul class="pagination">
+            ${pagination}
+            </ul>
+          </nav>
         </div>`;
         questions.forEach((questionObj) => {
           questionsHtml += `
@@ -56,12 +86,17 @@ const getQuestions = async () => {
 
 const getQuestionsService = async (subjectId) => {
   try {
-    let res = await fetch(`/api/v1/questions?parentId=${subjectId}`, {
-      method: "GET",
-    });
+    let res = await fetch(
+      `/api/v1/questions?parentId=${subjectId}&page=${page}`,
+      {
+        method: "GET",
+      }
+    );
     // console.log(res);
     if (res.status === 200) {
-      return await res.json();
+      const resData = await res.json();
+      // console.log(resData);
+      return resData;
     }
     return false;
   } catch (error) {

@@ -14,7 +14,10 @@ class Service {
       finalPage = page || 1,
       finalLimit = limit || 10;
 
-    return await this.model.paginate(finalQuery, finalPage, finalLimit);
+    return await this.model.paginate(finalQuery, {
+      page: finalPage,
+      limit: finalLimit,
+    });
   });
 
   searchValues = asyncHandler(async (searchWords) => {
