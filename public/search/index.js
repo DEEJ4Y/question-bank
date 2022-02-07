@@ -21,9 +21,15 @@ const getSearchResults = async () => {
       `;
     } else {
       results.forEach((questionObj) => {
+        questionHtml = ``;
+        questionObj.question.forEach((questionFragment, idx) => {
+          questionHtml += `
+            <p>${idx === 0 ? "❓ " : ""}${questionFragment}</p>
+          `;
+        });
         newHtml += `
           <div class="p-3 mt-3 shadow rounded h-100">          
-            <div class="h6">❓ ${questionObj.question}</div>
+            <div class="">${questionHtml}</div>
             <div>
               <a class="mb-1" href="/subjects/questions/view/?id=${questionObj._id}">
                 <button class="btn btn-sm btn-outline-success">See Question 🚀</button>
